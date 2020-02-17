@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  config-importer:
+    container_name: config-importer
+    build: .
+    environment:
+      # environment variable to be used within your executed scripts
+      SAMPLE_ENV_VARIABLE: 'sample-script'
+    volumes:
+      - type: bind
+        source: ./volume
+        target: /importer
+    # This command will wait till it reaches the URL (google) to ensure its up and running and then only execute the specified script
+    command: sh -c "wait-on -t 30000 https-get://www.google.com && node sample-script.js"
